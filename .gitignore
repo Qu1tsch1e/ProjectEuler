@@ -6,3 +6,7 @@ ProjectEuler/bin/Debug/ProjectEuler.pdb
 .vs/ProjectEuler/v15/Server/sqlite3/storage.ide-shm
 .vs/ProjectEuler/v15/Server/sqlite3/storage.ide-wal
 ProjectEuler/obj/
+.vs/
+Problem12/bin/Debug/
+Problem12/obj/
+Problem13/obj/
