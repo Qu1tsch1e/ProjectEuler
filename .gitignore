@@ -6,3 +6,8 @@ ProjectEuler/bin/Debug/ProjectEuler.pdb
 .vs/ProjectEuler/v15/Server/sqlite3/storage.ide-shm
 .vs/ProjectEuler/v15/Server/sqlite3/storage.ide-wal
 ProjectEuler/obj/
+packages/System.Runtime.Numerics.4.3.0/
+Problem579/obj/
+Problem579/bin/
+Problem699/obj/
+Problem699/bin/
