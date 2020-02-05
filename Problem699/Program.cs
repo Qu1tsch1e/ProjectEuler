@@ -1,5 +1,7 @@
 using System;
-using System.Collections.Generic;
+using System.Diagnostics;
+using System.Numerics;
+using System.Threading.Tasks;
 
 namespace Problem699
 {
@@ -8,23 +10,27 @@ namespace Problem699
         private static void Main(string[] args)
         {
             long N = 100000000000000;
-            //long N = 1000000;
+            //long N = 10000000;
 
-            long sum = 0;
-            for (long i = 3; i <= N; i+=3)
+            BigInteger sum = 0;
+            Stopwatch watch = new Stopwatch();
+            watch.Start();
+            Parallel.For(3L, N / 3, iterator =>
             {
+                long i = iterator * 3;
                 long sigma = SumOfAllDivisors(i);
                 long gcd = CalculateGreatestCommonDivisor(sigma, i);
 
-                //long a = sigma / gcd;
                 long b = i / gcd;
                 if (IsPowerOfThree(b))
                 {
-                    Console.WriteLine("n : " + i + " ||| sigma(n)/n : " + sigma + "/" + i + " ||| gcd : " + gcd + " ||| " + "a/b : " + a + "/" + b);
+                    Console.WriteLine("n : " + i + " ||| sigma(n)/n : " + sigma + "/" + i + " ||| gcd : " + gcd + " ||| b : " + b + " ||| sum : " + sum);
                     sum += i;
                 }
-            }
-            Console.WriteLine(sum);
+            });
+            watch.Stop();
+            Console.WriteLine("Sum: " + sum);
+            Console.WriteLine("Time elapsed: " + watch.ElapsedMilliseconds + " ms");
             Console.Read();
         }
 
@@ -37,15 +43,6 @@ namespace Problem699
         private static long CalculateGreatestCommonDivisor(long u, long v)
         {
             int shift = 0;
-            if (u == 0)
-            {
-                return v;
-            }
-
-            if (v == 0)
-            {
-                return u;
-            }
 
             while (((u | v) & 1) == 0)
             {
@@ -80,34 +77,28 @@ namespace Problem699
 
         private static long SumOfAllDivisors(long n)
         {
-            return Sum(GetDivisors(n));
-        }
-
-        private static List<long> GetDivisors(long n)
-        {
-            List<long> divisors = new List<long>();
-            for (long i = 1; i <= Math.Sqrt(n); i++)
+            long res = 1;
+            for (long i = 2; i <= Math.Sqrt(n); i++)
             {
-                if (n % i == 0)
+                long curr_sum = 1;
+                long curr_term = 1;
+                while (n % i == 0)
                 {
-                    divisors.Add(i);
-                    if (n / i != i)
-                    {
-                        divisors.Add(n / i);
-                    }
-                }
-            }
-            return divisors;
-        }
+                    n = n / i;
 
-        public static long Sum(List<long> queryable)
-        {
-            long sum = default(long);
-            foreach (long element in queryable)
-            {
-                sum += element;
+                    curr_term *= i;
+                    curr_sum += curr_term;
+                }
+
+                res *= curr_sum;
             }
-            return sum;
+
+            if (n >= 2)
+            {
+                res *= 1 + n;
+            }
+
+            return res;
         }
     }
 }
